@@ -2,7 +2,7 @@ import copy
 
 filename_1 = r'C:\Users\宝琦\Documents\EXP_Data\Modern info\shakespeare-merchant.trec.1'
 filename_2 = r'C:\Users\宝琦\Documents\EXP_Data\Modern info\shakespeare-merchant.trec.2'
-file_test = r'test.txt'
+#file_test = r'test.txt'
 
 tag_list = ['DOC','DOCNO']
 
@@ -37,7 +37,7 @@ class DocStream():
                         if temp == 'DOC':
                             self.doc_token_str =  copy.deepcopy(context_temp)
                             self.token_stream.setdefault(self.docnum,self.doc_token_str)
-                            print('doc num is ',self.docNo)
+                            #print('doc num is ',self.docNo)
                             self.docNo = ''
                             context_temp = ''
                         elif temp == 'DOCNO':

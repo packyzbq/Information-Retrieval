@@ -1,6 +1,7 @@
 class Node(object):
     def __init__(self,val,p=0):
-        self.data = val
+        self.docno = val[0]
+        self.tf = val[1]
         self.next = p
 
 class LinkList(object):
@@ -166,9 +167,3 @@ class LinkList(object):
             return i
         else:
             return -1
-
-l = LinkList()
-l.initlist([1,2,3,4,5])
-print(l.getitem(0))
-l.delete(0)
-print(l.getitem(0))
