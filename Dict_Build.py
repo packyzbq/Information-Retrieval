@@ -74,6 +74,7 @@ class Dict_Postlist():
                 self.__addToPostList__(term_pointer,doc_pointer)
             else:
                 self.__addToDict__(temp_term,doc_pointer)
+
             line_index+=1
             term_pointer+=1
         with open(filename,'w+') as outfile:
@@ -83,7 +84,8 @@ class Dict_Postlist():
                 out = ''.join([item,'|',s,'   '])
                 outfile.write(out)
                 outfile.write('\n')
-                outfile.write(self.token_dict[item].post_point.output())
+                temp_link = self.token_dict[item].post_point
+                outfile.write(temp_link.output())
                 outfile.write('\n')
         return flag
 

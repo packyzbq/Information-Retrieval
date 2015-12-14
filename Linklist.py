@@ -185,16 +185,15 @@ class LinkList(object):
             return False
     def output(self):
         p = self.head
-        if p.next == 0:
+        if p == 0:
             print('empty')
         s= ''
-        while p.next!=0:
-            s += p.docno
+        while p!=0:
+            s += str(p.docno)
             s += ','
-            s += p.tf
+            s += str(p.tf)
             s += '|'
             p = p.next
-        print(s)
         return s
 '''
 list_test = LinkList()
