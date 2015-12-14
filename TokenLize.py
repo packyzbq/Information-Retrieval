@@ -79,9 +79,9 @@ class DocStream():
         self.__splitter__(filename)
         self.__stream_token__()
         return self.token_stream
-
+'''
 stream = DocStream()
 test_dic = stream.getTokenStream(filename_1)
 for i in test_dic:
     print(i,':',test_dic.get(i))
-
+'''
