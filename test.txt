@@ -1,0 +1,7 @@
+<DOC>
+<DOCNO>SHK-MOV-0-0</DOCNO>
+<title>	THE MERCHANT OF VENICE </title>
+
+abc   def  gh
+
+</DOC>
