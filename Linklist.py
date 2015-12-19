@@ -1,3 +1,5 @@
+import Gamma
+
 class Node(object):
     def __init__(self,val,p=0):
         self.docno = val[0]
@@ -71,15 +73,22 @@ class LinkList(object):
 
 
     def append(self,item):
-
-        q = Node(item)
+        pre = self.head
+        curr = self.head
+        temp = item[0]
         if self.head ==0:
-            self.head = q
+            self.head = Node(item)
+            return
         else:
-            p = self.head
-            while p.next!=0:
-                p = p.next
-            p.next = q
+            val = curr.docno
+            curr = curr.next
+            while curr!= 0:
+                val += Gamma.__gammaUncompress__(curr.docno)
+                pre = curr
+                curr = curr.next
+            #val += Gamma.__gammaUncompress__(curr.docno)
+            item[0] = Gamma.__gamma__(temp-val)
+            pre.next = Node(item)
 
 
     def getitem(self,index,double=False):
@@ -121,7 +130,7 @@ class LinkList(object):
         while p.next!=0 and j<index:
             post = p
             p = p.next
-            j+=1
+            j += 1
 
         if index ==j:
             q = Node(item,p)
@@ -176,9 +185,11 @@ class LinkList(object):
             #print('Linklist is empty.')
             return False
         p = self.head
-        while p.next!=0 and not p.docno == value:
+        docno_val=p.docno
+        while p.next!=0 and not docno_val == value:
             p = p.next
-        if p.docno == value:
+            docno_val += Gamma.__gammaUncompress__(p.docno)
+        if docno_val == value:
             p.tf+=1
             return True
         else:
@@ -188,8 +199,17 @@ class LinkList(object):
         if p == 0:
             print('empty')
         s= ''
+        count = p.docno
+        s += str(count)
+        s += ','
+        s += str(p.tf)
+        s += '|'
+        p = p.next
         while p!=0:
-            s += str(p.docno)
+            #print(count)
+            count += Gamma.__gammaUncompress__(p.docno)
+            s += str(count)
+            #print('add : ',)
             s += ','
             s += str(p.tf)
             s += '|'
@@ -202,4 +222,6 @@ list_test.initlist(data)
 print(list_test.getitem(2,True))
 list_test.increase('c')
 print(list_test.getitem(2,True))
+list_test.append(['d',2])
+print(list_test.output())
 '''

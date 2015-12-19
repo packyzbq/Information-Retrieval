@@ -20,9 +20,10 @@ class DocStream():
         tag_stack = []          #标签栈
         with open(filename) as doc_file:
             for row in doc_file:
+                #print(row)
                 i= 0
                 #print(context_temp)
-                row_len = len(row)-1
+                row_len = len(row)
                 #print(row_len)
                 while i < row_len:
                     #print(row[i])
@@ -65,6 +66,10 @@ class DocStream():
                         context_temp += ' '
                         i -= 1
                     elif row[i] == '\n':
+                        i += 1
+                        while i < row_len and row[i] == '\n':
+                            i += 1
+                        i -= 1
                         context_temp += ' '
                     i += 1
         return
@@ -72,7 +77,12 @@ class DocStream():
     def __stream_token__(self):
         for i in self.token_stream:
             row = self.token_stream.get(i)
-            row_split = row.split(' ')
+            if ' ' not in row:
+                row_split = row
+            else:
+                row_split = row.split(' ')
+            while '' in row_split:
+                row_split.remove('')
             self.token_stream[i] = row_split
         return
     def getTokenStream(self,filename):

@@ -1,4 +1,5 @@
 from Linklist import LinkList
+import Gamma
 import math
 
 # 词典节点
@@ -22,6 +23,7 @@ class Dict_Node():
 # ps 链表的Node init的数据，为双层list
 class Dict_Postlist():
     token_dict={}
+    #token_dict_all = {}
     #post_list = LinkList() # 倒排索引表
     dic_string=''           # 单一字符串字典
     tail = 0;               # dic_string 的指针
@@ -35,6 +37,9 @@ class Dict_Postlist():
         if not templink.increase(docno):
             item = [docno,1]
             templink.append(item)
+            self.token_dict[term].df += 1
+            return
+        self.token_dict[term].df += 1
         return
 
     # 添加到词典，
@@ -42,12 +47,12 @@ class Dict_Postlist():
     #      docno
     def __addToDict__(self,term,docno):
         post_list = LinkList()
-        node = Dict_Node(1,post_list,self.tail)
+        node = Dict_Node(0,post_list,self.tail)
         #print(node.df,' ',node.post_point,' ',node.dict_point)
         self.token_dict[term] = node
         self.tail+=len(term)
         self.dic_string+=term
-
+        #print(node.df,' ',node.post_point,' ',node.dict_point)
         self.__addToPostList__(term,docno)
         return
 
@@ -58,7 +63,7 @@ class Dict_Postlist():
         doc_pointer = 1         #token_stream 中，指向doc的索引
         term_pointer = 0        #token_stream中，指向term的索引
         line_index = 0
-        max_line = 50
+        max_line = 10000
         flag = False
         while line_index <= max_line:
             if doc_pointer > len(token_stream):
@@ -71,12 +76,13 @@ class Dict_Postlist():
             # 判断是否在词典中
             temp_term = token_stream[doc_pointer][term_pointer]
             if temp_term in self.token_dict:
-                self.__addToPostList__(term_pointer,doc_pointer)
+                self.__addToPostList__(temp_term,doc_pointer)
             else:
                 self.__addToDict__(temp_term,doc_pointer)
 
             line_index+=1
             term_pointer+=1
+        print(self.token_dict.get('of').df)
         with open(filename,'w+') as outfile:
             for item in self.token_dict:
                 s = self.token_dict[item].__outNode__()
@@ -89,36 +95,6 @@ class Dict_Postlist():
                 outfile.write('\n')
         return flag
 
-    # gamma压缩
-    def __gamma__(self,num):
-        tail_len = int(math.log(num,2))
-        bin_t = self.__getbin__(tail_len)
-        bin_result = num & bin_t                        #原二进制后tail_len位
-        len_code = self.__getbin__(tail_len,False)       #编码中 尾长
-        result = 0x01
-        result = (result << tail_len) | len_code
-        result = (result << tail_len) | bin_result
-        return result
-
-    def __gammaUncompress__(self,num):
-        return
-
-    def __getbin__(self,len,last_zero=False):
-        a = 0
-        if len == 1:
-            if not last_zero:
-                return 0x01
-            else:
-                return 0x02
-
-        for i in range(len):
-            a = a | 0x01
-            a = a << 1
-        if not last_zero:
-            a = a >> 1
-        return a
-
-
     #TODO get set method
 
 
@@ -130,4 +106,9 @@ class Dict_Postlist():
             fileindex+=1
         return
 
-
+'''
+t = Gamma.__gamma__(9)
+#print(bin(t))
+t = Gamma.__gammaUncompress__(t)
+print(t)
+'''
